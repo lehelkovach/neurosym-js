@@ -1,0 +1,1 @@
+incorporate neurosym-js starter project code from this repo/branch: https://github.com/lehelkovach/osl-agent/tree/cursor/neurosym-js-project-foundation-253e then update this repo's main and update this file on main with proper documentation for the project
