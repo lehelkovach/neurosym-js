@@ -76,6 +76,22 @@ describe('NeuroJSON v0.1 sampler', () => {
     expect(targetPosterior).toBeGreaterThanOrEqual(0);
     expect(targetPosterior).toBeLessThanOrEqual(1);
   });
+
+  test('unknown evidence and queries are surfaced', () => {
+    const program: NeuroJSONProgram = {
+      version: '0.1',
+      variables: {
+        known: { type: 'boolean', prior: 0.4 }
+      },
+      factors: [],
+      evidence: { known: 1, missing: 1 },
+      queries: ['known', 'missing']
+    };
+
+    const result = infer(program, undefined, { iterations: 1000, seed: 5 });
+    expect(result.evidenceStats?.ignored).toContain('missing');
+    expect(result.warnings?.some((warning) => warning.includes('missing'))).toBe(true);
+  });
 });
 
 describe('NeuroJSON v0.1 validation', () => {

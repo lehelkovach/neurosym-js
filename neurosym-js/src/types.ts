@@ -417,6 +417,7 @@ export interface VariableExplanation {
 
 export interface EvidenceStats {
   clamped: string[];
+  ignored?: string[];
 }
 
 export interface InferenceSummary {
@@ -425,4 +426,5 @@ export interface InferenceSummary {
   effectiveSampleSize?: number;
   evidenceStats?: EvidenceStats;
   explanations?: Record<string, VariableExplanation>;
+  warnings?: string[];
 }

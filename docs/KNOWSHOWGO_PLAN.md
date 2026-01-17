@@ -37,6 +37,7 @@ its own branch or repository as needed.
 - Map factors to KSG Assertions or Associations.
 - Store inference runs as separate entities with provenance.
 - Write back posteriors to `Assertion.truth` when appropriate.
+- Capture `warnings` and `evidenceStats` in run metadata for traceability.
 
 ## Integration constraints
 - Keep the activation graph session-scoped by default.

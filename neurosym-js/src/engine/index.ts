@@ -27,9 +27,15 @@ export const infer = (
   const mergedEvidence = { ...(programEvidence ?? {}), ...(evidence ?? {}) };
 
   const result = runSampler(ir, mergedEvidence, options);
+  const warningSet = new Set<string>(ir.warnings ?? []);
+
+  (result.evidenceStats?.ignored ?? []).forEach((name) => {
+    warningSet.add(`Ignored evidence for unknown variable "${name}"`);
+  });
 
   if (!isIr && Array.isArray((programOrIr as NeuroJSONProgram).queries)) {
-    const querySet = new Set((programOrIr as NeuroJSONProgram).queries);
+    const queries = (programOrIr as NeuroJSONProgram).queries ?? [];
+    const querySet = new Set(queries);
     const filteredPosteriors: Record<string, number> = {};
     const filteredExplanations: Record<string, NonNullable<InferenceSummary['explanations']>[string]> = {};
 
@@ -43,12 +49,22 @@ export const infer = (
       }
     });
 
+    queries.forEach((name) => {
+      if (!(name in ir.indexByName)) {
+        warningSet.add(`Unknown query variable "${name}"`);
+      }
+    });
+
     return {
       ...result,
       posteriors: filteredPosteriors,
-      explanations: result.explanations ? filteredExplanations : undefined
+      explanations: result.explanations ? filteredExplanations : undefined,
+      warnings: warningSet.size > 0 ? Array.from(warningSet) : undefined
     };
   }
 
-  return result;
+  return {
+    ...result,
+    warnings: warningSet.size > 0 ? Array.from(warningSet) : undefined
+  };
 };
