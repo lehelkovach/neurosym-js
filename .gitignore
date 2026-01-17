@@ -1,0 +1,17 @@
+# Python & environment
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.env
+
+# Editor / OS
+.vscode/
+Thumbs.db
+.DS_Store
+
+# Node (if ever used)
+node_modules/

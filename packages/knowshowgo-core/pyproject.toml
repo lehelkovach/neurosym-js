@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "knowshowgo-core"
+version = "0.0.1"
+description = "KnowShowGo core service (REST) monorepo package"
+authors = ["KnowShowGo"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.123.7"
+uvicorn = "^0.30.6"
+pydantic = "^2.9.2"
+networkx = "^3.4.2"
+python-arango = "^7.9.0"
+requests = "^2.31"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
