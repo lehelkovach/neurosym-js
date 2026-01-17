@@ -1,0 +1,26 @@
+{
+  "meta": {
+    "version": "0.1",
+    "iterations": 5000,
+    "seed": 42
+  },
+  "programs": {
+    "wet-grass": {
+      "posteriors": {
+        "rain": 0.655114678790956,
+        "sprinkler": 0.286765364788475,
+        "wet_grass": 1
+      }
+    },
+    "inhibition": {
+      "posteriors": {
+        "wet_grass": 0.24459999999999618
+      }
+    },
+    "conflict": {
+      "posteriors": {
+        "cough": 0.34439999999998394
+      }
+    }
+  }
+}
