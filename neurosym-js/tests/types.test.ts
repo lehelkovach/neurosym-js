@@ -52,8 +52,8 @@ describe('Types and Validation', () => {
     });
 
     it('should require version field', () => {
-      const doc = { ...validDoc };
-      delete (doc as any).version;
+      const doc = { ...validDoc } as { version?: string };
+      delete doc.version;
       const result = validateNeuroJSON(doc);
       expect(result.valid).toBe(false);
       expect(result.errors.some(e => e.path === 'version')).toBe(true);

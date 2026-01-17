@@ -3,7 +3,7 @@
  */
 
 import { NeuroGraph, createGraph, parseNeuroJSON } from '../src/neuro-graph';
-import { NeuroJSON } from '../src/types';
+import type { NeuroJSON } from '../src/types';
 
 describe('NeuroGraph', () => {
   const sampleDoc: NeuroJSON = {
@@ -60,7 +60,7 @@ describe('NeuroGraph', () => {
 
     it('should validate on load and return errors for invalid docs', () => {
       const graph = new NeuroGraph();
-      const result = graph.load({} as any);
+      const result = graph.load({} as unknown as NeuroJSON);
       expect(result.valid).toBe(false);
       expect(result.errors.length).toBeGreaterThan(0);
     });

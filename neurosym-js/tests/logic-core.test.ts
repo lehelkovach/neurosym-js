@@ -22,6 +22,7 @@ import {
   impliesGradient,
   inhibitGradient
 } from '../src/logic-core';
+import type { Operation } from '../src/types';
 
 describe('Logic Core', () => {
   describe('Utility Functions', () => {
@@ -277,7 +278,7 @@ describe('Logic Core', () => {
       });
 
       it('should throw for unknown operation', () => {
-        expect(() => applyOperation('UNKNOWN' as any, [])).toThrow();
+        expect(() => applyOperation('UNKNOWN' as unknown as Operation, [])).toThrow();
       });
     });
   });
