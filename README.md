@@ -66,6 +66,5 @@ npm run typecheck
 - Standalone docs: `neurosym.js-standalone/docs/`
 
 ## Design docs
-- Design/positioning: `docs/NeuroJSON_neurosymjs_design_positioning_v0.1.md`
-- Unified plan (non-KSG): `docs/DEVELOPMENT_PLAN.md`
+- Unified plan (includes design/positioning): `docs/DEVELOPMENT_PLAN.md`
 - KnowShowGo plan (separate track): `docs/KNOWSHOWGO_PLAN.md`
