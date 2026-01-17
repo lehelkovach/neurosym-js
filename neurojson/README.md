@@ -7,6 +7,7 @@ This repo contains the v0.1 spec, the JSON Schema, and runnable examples.
 - `spec/neurojson.v0.1.md`: spec and semantics
 - `spec/neurojson.schema.json`: AJV-compatible JSON Schema
 - `examples/`: sample programs for testing and demos
+- `fixtures/v0.1/expectations.json`: deterministic fixture outputs
 - `docs/mapping-to-ksg.md`: mapping guidance for KSG integrations
 
 ## Quick example
