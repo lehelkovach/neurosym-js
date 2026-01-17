@@ -64,5 +64,8 @@ npm run typecheck
 ## Documentation
 - Core package README: `neurosym-js/README.md`
 - Standalone docs: `neurosym.js-standalone/docs/`
-- Architecture and roadmap: `docs/NEUROSYM_MASTER_PLAN.md`
-- Python integration guide: `docs/KSG_INTEGRATION.md`
+
+## Design docs
+- Design/positioning: `docs/NeuroJSON_neurosymjs_design_positioning_v0.1.md`
+- Unified plan (non-KSG): `docs/DEVELOPMENT_PLAN.md`
+- KnowShowGo plan (separate track): `docs/KNOWSHOWGO_PLAN.md`

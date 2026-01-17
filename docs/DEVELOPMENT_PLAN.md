@@ -1,28 +1,26 @@
 # Unified Development Plan
 
 This file is the single source of truth for development planning in this
-repository. It merges and supersedes all other plan and analysis documents.
-Keep other documents for historical context and deep dives, but execute
-against this plan.
+repository. It merges and supersedes all other design and planning documents
+except KnowShowGo-specific plans, which are intentionally separated.
 
 ## Source documents merged
 - `docs/NEUROSYM_MASTER_PLAN.md`
-- `docs/KSG_INTEGRATION.md`
 - `docs/GPT-5.2.txt`
 - `docs/claude-opus-4-analysis.txt`
 - `docs/gemini-3-pro-preview.txt`
-- `docs/salvage-knowshowgo.txt`
-- `docs/salvage-osl-agent-prototype.txt`
 - `readme-agentic-memory-prototype.md`
 - `neurosym-js/README.md`
 - `neurosym.js-standalone/README.md`
 
+## Related plan (separate)
+- KnowShowGo-specific plans are maintained in `docs/KNOWSHOWGO_PLAN.md`.
+
 ## Scope and goals
 1) Deliver a zero-dependency NeuroSym.js core for neurosymbolic reasoning.
 2) Maintain a stable NeuroJSON schema shared across JS and Python.
-3) Provide Python parity and KnowShowGo integration.
-4) Provide optional working-memory reinforcement and async persistence.
-5) Offer clean documentation, examples, and testing guidance.
+3) Provide a standalone NeuroJSON spec repository with examples and schema.
+4) Offer clean documentation, examples, and testing guidance.
 
 ## Current state (summary)
 - TypeScript core library exists in `neurosym-js/`.
@@ -35,16 +33,14 @@ against this plan.
 - Separation of concerns: logic core, graph state, and engine remain decoupled.
 - Parity: JS and Python should produce equivalent results for the same schema.
 - Zero-dependency runtime core; dev-only dependencies are acceptable.
-- Working memory is distinct from long-term semantic memory.
-- Async persistence is optional and must not block the hot path.
+- Keep KnowShowGo integration plans separate and optional.
 
 ## Architecture summary
 - Logic core: t-norms and operators for fuzzy logic and argumentation.
 - NeuroGraph: in-memory structure for variables, rules, and constraints.
 - NeuroEngine: inference, training, and export surface.
 - NeuroJSON: the shared schema that encodes variables, rules, constraints.
-- Working memory: reinforcement graph with activation weights (optional layer).
-- Replication: async queue for persistence of activation updates (optional layer).
+- Spec repo: versioned spec, schema, and examples for NeuroJSON.
 
 ## Roadmap
 
@@ -84,26 +80,16 @@ Deliverables:
 Exit criteria:
 - Schema spec is versioned and cross-runtime validators exist.
 
-### Phase 4: KnowShowGo integration and Python parity
-Goal: a consistent story for Python users and graph integration.
+### Phase 4: NeuroJSON spec repository
+Goal: make the spec standalone, testable, and versioned.
 Deliverables:
-- Update the Python engine to match JS behavior and config defaults.
-- Document mapping from KnowShowGo nodes/associations to NeuroJSON.
-- Keep `docs/KSG_INTEGRATION.md` accurate and minimal.
+- Spec markdown and a strict JSON Schema for v0.1.
+- Example programs with expected behavior.
+- Mapping notes for external integrations (kept in separate doc if needed).
 Exit criteria:
-- Python examples in docs run and match JS outputs.
+- Schema validates all examples and rejects invalid programs.
 
-### Phase 5: Working memory and replication (optional)
-Goal: provide cognitive primitives for activation and persistence.
-Deliverables:
-- WorkingMemoryGraph with reinforcement and optional decay.
-- AsyncReplicator for background persistence with a GraphClient protocol.
-- Clear guidance for when to keep activation ephemeral vs persisted.
-Exit criteria:
-- Working memory can be used standalone without storage dependencies.
-- Persistence is optional and does not block inference.
-
-### Phase 6: Transpiler and LLM tools (optional)
+### Phase 5: Transpiler and LLM tools (optional)
 Goal: transform NeuroJSON into explanations or code via LLMs.
 Deliverables:
 - Prompt templates and a reference transpiler module.
@@ -111,7 +97,7 @@ Deliverables:
 Exit criteria:
 - A minimal end-to-end example works and is documented.
 
-### Phase 7: Service and UI integration (optional)
+### Phase 6: Service and UI integration (optional)
 Goal: expose a service endpoint and demo UI for reasoning.
 Deliverables:
 - Minimal API endpoint to run inference on stored graphs.
@@ -119,13 +105,9 @@ Deliverables:
 Exit criteria:
 - A reference service runs locally and can execute inference.
 
-## Downstream integration guidance (osl-agent-prototype)
-These items are recommendations only; do not block core library work.
-Priority order:
-1) WorkingMemoryGraph as activation layer.
-2) AsyncReplicator for background persistence.
-3) Deterministic parser for offline or low-cost intent detection.
-4) Immutable prototype patterns for schema integrity.
+## Downstream integration guidance
+Keep KnowShowGo integration plans in the separate plan document. This plan
+should not block core library development.
 
 ## Testing strategy
 - JS: `npm test`, `npm run typecheck`, `npm run lint`.
