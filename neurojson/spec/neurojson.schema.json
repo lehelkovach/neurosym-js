@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://neurosym.ai/neurojson.v0.1.schema.json",
+  "title": "NeuroJSON v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "variables", "factors"],
+  "properties": {
+    "version": { "const": "0.1" },
+    "variables": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/definitions/variable" }
+    },
+    "factors": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/factor" }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/evidenceValue" }
+    },
+    "queries": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "definitions": {
+    "probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidenceValue": {
+      "type": "number",
+      "enum": [0, 1]
+    },
+    "variable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "const": "boolean" },
+        "prior": { "$ref": "#/definitions/probability" },
+        "description": { "type": "string" }
+      }
+    },
+    "factor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inputs", "output", "op", "weight"],
+      "properties": {
+        "id": { "type": "string" },
+        "inputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "output": { "type": "string" },
+        "op": { "enum": ["IF_THEN", "AND", "OR", "NOT"] },
+        "weight": { "$ref": "#/definitions/probability" },
+        "mode": { "enum": ["support", "inhibit"] },
+        "description": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "op": { "const": "IF_THEN" } } },
+          "then": {
+            "properties": { "inputs": { "type": "array", "minItems": 1, "maxItems": 1 } }
+          }
+        },
+        {
+          "if": { "properties": { "op": { "const": "NOT" } } },
+          "then": {
+            "properties": { "inputs": { "type": "array", "minItems": 1, "maxItems": 1 } }
+          }
+        }
+      ]
+    }
+  }
+}

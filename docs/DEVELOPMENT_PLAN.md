@@ -12,7 +12,6 @@ except KnowShowGo-specific plans, which are intentionally separated.
 - `readme-agentic-memory-prototype.md`
 - `neurosym-js/README.md`
 - `neurosym.js-standalone/README.md`
-- `docs/NeuroJSON_neurosymjs_design_positioning_v0.1.md`
 
 ## Related plan (separate)
 - KnowShowGo-specific plans are maintained in `docs/KNOWSHOWGO_PLAN.md`.

@@ -7,13 +7,14 @@ logic can be serialized, versioned, and shared.
 Core idea: code as data. Logic lives in JSON, not hardcoded functions.
 
 ## Features
-- Lukasiewicz fuzzy logic core and continuous truth values (0.0 to 1.0)
-- Graph-based inference with rules and constraints
-- Argumentation via attack/support relations
-- Heuristic weight training from examples
+- NeuroJSON v0.1 spec and AJV schema validation
+- Compiler to an explicit intermediate representation (IR)
+- Likelihood-weighted sampler for boolean programs
+- Minimal explanations for supporting and inhibiting factors
 - Zero runtime dependencies with TypeScript types
 
 ## Repository layout
+- `neurojson/`: NeuroJSON v0.1 spec repo (schema + examples)
 - `neurosym-js/`: primary TypeScript package (core library)
 - `neurosym.js-standalone/`: standalone package with docs, examples, and release assets
 - `src/knowshowgo/` and `packages/`: optional Python integration and KnowShowGo modules
@@ -25,30 +26,27 @@ Install from npm (published package name is `neurosym`):
 npm install neurosym
 ```
 
-Use the main API:
+Use the main API (v0.1):
 ```typescript
-import { NeuroEngine } from 'neurosym';
+import { infer } from 'neurosym';
 
-const schema = {
-  version: '1.0',
+const program = {
+  version: '0.1',
   variables: {
-    rain: { type: 'bool', prior: 0.3 },
-    wet_ground: { type: 'bool', prior: 0.1 }
+    rain: { type: 'boolean', prior: 0.2 },
+    sprinkler: { type: 'boolean', prior: 0.1 },
+    wet_grass: { type: 'boolean', prior: 0.05 }
   },
-  rules: [{
-    id: 'rain_wets',
-    type: 'IMPLICATION',
-    inputs: ['rain'],
-    output: 'wet_ground',
-    op: 'IDENTITY',
-    weight: 0.95
-  }],
-  constraints: []
+  factors: [
+    { inputs: ['rain'], output: 'wet_grass', op: 'IF_THEN', weight: 0.8, mode: 'support' },
+    { inputs: ['sprinkler'], output: 'wet_grass', op: 'IF_THEN', weight: 0.6, mode: 'support' }
+  ],
+  evidence: { wet_grass: 1 },
+  queries: ['rain', 'sprinkler', 'wet_grass']
 };
 
-const engine = new NeuroEngine(schema);
-const result = engine.run({ rain: 1.0 });
-console.log(result.wet_ground);
+const result = infer(program, undefined, { iterations: 5000, seed: 42 });
+console.log(result.posteriors);
 ```
 
 ## Development (core library)
@@ -64,6 +62,7 @@ npm run typecheck
 ## Documentation
 - Core package README: `neurosym-js/README.md`
 - Standalone docs: `neurosym.js-standalone/docs/`
+- NeuroJSON spec: `neurojson/spec/neurojson.v0.1.md`
 
 ## Design docs
 - Unified plan (includes design/positioning): `docs/DEVELOPMENT_PLAN.md`
