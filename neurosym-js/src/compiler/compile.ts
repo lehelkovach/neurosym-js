@@ -26,6 +26,7 @@ export const compileProgram = (programInput: NeuroJSONProgram | unknown): Progra
     indexByName[variable.name] = idx;
   });
 
+  const warnings: string[] = [];
   const factorsByOutput: number[][] = Array.from({ length: variables.length }, () => []);
   const resolveIndex = (name: string, context: string): number => {
     const idx = indexByName[name];
@@ -72,7 +73,6 @@ export const compileProgram = (programInput: NeuroJSONProgram | unknown): Progra
   });
 
   const topo = buildTopoOrder(variables.length, edges);
-  const warnings: string[] = [];
   if (topo.hasCycle) {
     warnings.push(
       `Cycle detected among variables: ${topo.cyclicNodes
@@ -80,6 +80,22 @@ export const compileProgram = (programInput: NeuroJSONProgram | unknown): Progra
         .filter(Boolean)
         .join(', ')}`
     );
+  }
+
+  if (program.evidence) {
+    Object.keys(program.evidence).forEach((name) => {
+      if (!(name in indexByName)) {
+        warnings.push(`Unknown evidence variable "${name}"`);
+      }
+    });
+  }
+
+  if (program.queries) {
+    program.queries.forEach((name) => {
+      if (!(name in indexByName)) {
+        warnings.push(`Unknown query variable "${name}"`);
+      }
+    });
   }
 
   return {

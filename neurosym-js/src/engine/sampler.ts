@@ -76,12 +76,15 @@ export const runSampler = (
 
   const evidenceIndices = new Map<number, 0 | 1>();
   const clamped: string[] = [];
+  const ignored: string[] = [];
   if (evidence) {
     Object.entries(evidence).forEach(([name, value]) => {
       const idx = ir.indexByName[name];
       if (idx !== undefined) {
         evidenceIndices.set(idx, value);
         clamped.push(name);
+      } else {
+        ignored.push(name);
       }
     });
   }
@@ -180,7 +183,7 @@ export const runSampler = (
     samplesUsed: iterations,
     effectiveSampleSize:
       weightSum > 0 ? (weightSum * weightSum) / (weightSquareSum || 1) : 0,
-    evidenceStats: { clamped },
+    evidenceStats: { clamped, ignored: ignored.length > 0 ? ignored : undefined },
     explanations
   };
 };

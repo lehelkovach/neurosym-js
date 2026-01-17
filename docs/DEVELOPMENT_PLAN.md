@@ -124,6 +124,7 @@ Deliverables:
 - Clear convergence rules for inference iterations.
 - Training API stabilization and documented heuristics.
 - Additional tests for constraints and argumentation operations.
+- Surface semantic warnings (unknown evidence/queries, cycles).
 Exit criteria:
 - Test suite covers core logic paths and passes reliably.
 

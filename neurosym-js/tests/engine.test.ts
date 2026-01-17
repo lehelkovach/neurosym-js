@@ -67,6 +67,43 @@ describe('NeuroEngine', () => {
     constraints: []
   };
 
+  const equivalenceSingleInputSchema: NeuroJSON = {
+    version: '1.0',
+    variables: {
+      input: { type: 'bool', prior: 0.2 },
+      output: { type: 'bool', prior: 0.1 }
+    },
+    rules: [
+      {
+        id: 'eq_single',
+        type: 'EQUIVALENCE',
+        inputs: ['input'],
+        output: 'output',
+        op: 'IDENTITY',
+        weight: 0.8
+      }
+    ],
+    constraints: []
+  };
+
+  const mutexSchema: NeuroJSON = {
+    version: '1.0',
+    variables: {
+      a: { type: 'bool', prior: 0.9 },
+      b: { type: 'bool', prior: 0.7 }
+    },
+    rules: [],
+    constraints: [
+      {
+        id: 'mutex_ab',
+        type: 'MUTEX',
+        source: 'a',
+        target: 'b',
+        weight: 1.0
+      }
+    ]
+  };
+
   describe('Constructor', () => {
     it('should create engine from schema', () => {
       const ai = new NeuroEngine(birdSchema);
@@ -131,6 +168,21 @@ describe('NeuroEngine', () => {
       const result = ai.run({ rain: 1.0 }, 5); // Just 5 iterations
       
       expect(result.rain).toBe(1.0);
+    });
+
+    it('should handle equivalence with a single input', () => {
+      const ai = new NeuroEngine(equivalenceSingleInputSchema);
+      const result = ai.run({ input: 1.0 });
+
+      expect(result.output).toBeGreaterThan(0.5);
+    });
+
+    it('should apply mutex constraints with locked variables', () => {
+      const ai = new NeuroEngine(mutexSchema);
+      const result = ai.run({ a: 1.0 });
+
+      expect(result.a).toBe(1.0);
+      expect(result.b).toBeLessThan(0.5);
     });
   });
 

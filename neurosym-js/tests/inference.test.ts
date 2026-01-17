@@ -67,6 +67,43 @@ describe('Inference Engine', () => {
     ]
   };
 
+  const equivalenceSingleInputDoc: NeuroJSON = {
+    version: '1.0',
+    variables: {
+      input: { type: 'bool', prior: 0.2 },
+      output: { type: 'bool', prior: 0.1 }
+    },
+    rules: [
+      {
+        id: 'eq_single',
+        type: 'EQUIVALENCE',
+        inputs: ['input'],
+        output: 'output',
+        op: 'IDENTITY',
+        weight: 0.8
+      }
+    ],
+    constraints: []
+  };
+
+  const mutexDoc: NeuroJSON = {
+    version: '1.0',
+    variables: {
+      a: { type: 'bool', prior: 0.9 },
+      b: { type: 'bool', prior: 0.7 }
+    },
+    rules: [],
+    constraints: [
+      {
+        id: 'mutex_ab',
+        type: 'MUTEX',
+        source: 'a',
+        target: 'b',
+        weight: 1.0
+      }
+    ]
+  };
+
   describe('Configuration', () => {
     it('should use default configuration', () => {
       const engine = new InferenceEngine();
@@ -491,6 +528,25 @@ describe('Inference Engine', () => {
       
       // Should either converge or hit max iterations
       expect(result.iterations).toBeGreaterThan(0);
+    });
+
+    it('should handle equivalence with a single input', () => {
+      const graph = new NeuroGraph(equivalenceSingleInputDoc);
+      graph.setValue('input', 1.0);
+      const engine = new InferenceEngine();
+      const result = engine.infer(graph);
+
+      expect(result.states.output?.value).toBeGreaterThan(0.5);
+    });
+
+    it('should apply mutex constraints with locked variables', () => {
+      const graph = new NeuroGraph(mutexDoc);
+      graph.lockVariable('a', 1.0);
+      const engine = new InferenceEngine();
+
+      engine.applyConstraints(graph);
+      const valueB = graph.getValue('b') ?? 1;
+      expect(valueB).toBeLessThan(0.5);
     });
   });
 });
