@@ -47,11 +47,25 @@ export {
 } from './engine';
 
 // =============================================================================
+// NeuroJSON v0.1 API (compiler + sampler engine)
+// =============================================================================
+
+export { validateProgram, assertValidProgram } from './schema/validate';
+export { compileProgram } from './compiler/compile';
+export { infer } from './engine/index';
+
+// =============================================================================
+// KSG Adapter (stub)
+// =============================================================================
+
+export type { KsgAdapter } from './adapters/ksg';
+
+// =============================================================================
 // Lower-level Classes (for advanced use)
 // =============================================================================
 
 export { NeuroGraph, createGraph, parseNeuroJSON } from './neuro-graph';
-export { InferenceEngine, infer, query } from './inference';
+export { InferenceEngine, infer as inferLegacy, query } from './inference';
 export { createEngine as createInferenceEngine } from './inference';
 
 // =============================================================================
@@ -117,7 +131,26 @@ export type {
   
   // Validation Types
   ValidationError,
-  ValidationResult
+  ValidationResult,
+
+  // NeuroJSON v0.1 Types
+  NeuroJSONVersion,
+  NeuroJSONVariableType,
+  FactorOpV01,
+  FactorMode,
+  NeuroJSONVariable,
+  NeuroJSONFactor,
+  NeuroJSONProgram,
+  ProgramValidationIssue,
+  ProgramValidationResult,
+  VariableIR,
+  FactorIR,
+  ProgramIR,
+  InferenceOptions,
+  InferenceSummary,
+  FactorContribution,
+  VariableExplanation,
+  EvidenceStats
 } from './types';
 
 // =============================================================================
@@ -138,4 +171,7 @@ export {
 export const VERSION = '0.1.0';
 
 /** NeuroJSON schema version */
-export const SCHEMA_VERSION = '1.0';
+export const SCHEMA_VERSION = '0.1';
+
+/** NeuroJSON v0.1 schema version */
+export const NEUROJSON_V0_1 = '0.1';

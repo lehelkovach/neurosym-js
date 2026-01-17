@@ -54,5 +54,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/lehelkovach/neurosym-js"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1"
   }
 }

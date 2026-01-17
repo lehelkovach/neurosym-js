@@ -1,0 +1,26 @@
+import { infer } from '../src';
+import type { NeuroJSONProgram } from '../src/types';
+
+const program: NeuroJSONProgram = {
+  version: '0.1',
+  variables: {
+    rain: { type: 'boolean', prior: 0.2 },
+    sprinkler: { type: 'boolean', prior: 0.1 },
+    wet_grass: { type: 'boolean', prior: 0.05 }
+  },
+  factors: [
+    { id: 'rain_wets_grass', inputs: ['rain'], output: 'wet_grass', op: 'IF_THEN', weight: 0.8, mode: 'support' },
+    { id: 'sprinkler_wets_grass', inputs: ['sprinkler'], output: 'wet_grass', op: 'IF_THEN', weight: 0.6, mode: 'support' }
+  ],
+  evidence: { wet_grass: 1 },
+  queries: ['rain', 'sprinkler', 'wet_grass']
+};
+
+const result = infer(program, undefined, { iterations: 5000, seed: 42 });
+
+console.log('Posteriors:', result.posteriors);
+console.log('Top support factors for wet_grass:');
+const support = result.explanations?.wet_grass?.supportingFactors ?? [];
+support.slice(0, 3).forEach((factor) => {
+  console.log(`- ${factor.factorId ?? factor.factorIndex}: contribution=${factor.contribution.toFixed(3)}`);
+});

@@ -1,0 +1,31 @@
+{
+  "version": "0.1",
+  "variables": {
+    "rain": { "type": "boolean", "prior": 0.2 },
+    "umbrella": { "type": "boolean", "prior": 0.3 },
+    "wet_grass": { "type": "boolean", "prior": 0.05 }
+  },
+  "factors": [
+    {
+      "id": "rain_wets_grass",
+      "inputs": ["rain"],
+      "output": "wet_grass",
+      "op": "IF_THEN",
+      "weight": 0.8,
+      "mode": "support"
+    },
+    {
+      "id": "umbrella_inhibits_wetness",
+      "inputs": ["umbrella"],
+      "output": "wet_grass",
+      "op": "IF_THEN",
+      "weight": 0.7,
+      "mode": "inhibit"
+    }
+  ],
+  "evidence": {
+    "rain": 1,
+    "umbrella": 1
+  },
+  "queries": ["wet_grass"]
+}

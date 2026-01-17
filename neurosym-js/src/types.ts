@@ -324,3 +324,105 @@ export function createDefaultConfig(): InferenceConfig {
     dampingFactor: 0.5
   };
 }
+
+// ============================================================================
+// NeuroJSON v0.1 Types (Spec + Engine)
+// ============================================================================
+
+export type NeuroJSONVersion = '0.1';
+export type NeuroJSONVariableType = 'boolean';
+export type FactorOpV01 = 'IF_THEN' | 'AND' | 'OR' | 'NOT';
+export type FactorMode = 'support' | 'inhibit';
+
+export interface NeuroJSONVariable {
+  type: NeuroJSONVariableType;
+  prior?: number;
+  description?: string;
+}
+
+export interface NeuroJSONFactor {
+  id?: string;
+  inputs: string[];
+  output: string;
+  op: FactorOpV01;
+  weight: number;
+  mode?: FactorMode;
+  description?: string;
+}
+
+export interface NeuroJSONProgram {
+  version: NeuroJSONVersion;
+  variables: Record<string, NeuroJSONVariable>;
+  factors: NeuroJSONFactor[];
+  evidence?: Record<string, 0 | 1>;
+  queries?: string[];
+  metadata?: Record<string, unknown>;
+}
+
+export interface ProgramValidationIssue {
+  path: string;
+  message: string;
+}
+
+export interface ProgramValidationResult {
+  valid: boolean;
+  errors: ProgramValidationIssue[];
+}
+
+export interface VariableIR {
+  name: string;
+  prior: number;
+}
+
+export interface FactorIR {
+  id?: string;
+  inputs: number[];
+  output: number;
+  op: FactorOpV01;
+  weight: number;
+  mode: FactorMode;
+}
+
+export interface ProgramIR {
+  version: NeuroJSONVersion;
+  variables: VariableIR[];
+  factors: FactorIR[];
+  topoOrder: number[] | null;
+  indexByName: Record<string, number>;
+  factorsByOutput: number[][];
+  warnings: string[];
+}
+
+export interface InferenceOptions {
+  iterations?: number;
+  seed?: number;
+  rng?: () => number;
+  engine?: 'sampler';
+}
+
+export interface FactorContribution {
+  factorIndex: number;
+  factorId?: string;
+  op: FactorOpV01;
+  mode: FactorMode;
+  weight: number;
+  activationCount: number;
+  contribution: number;
+}
+
+export interface VariableExplanation {
+  supportingFactors: FactorContribution[];
+  inhibitingFactors: FactorContribution[];
+}
+
+export interface EvidenceStats {
+  clamped: string[];
+}
+
+export interface InferenceSummary {
+  posteriors: Record<string, number>;
+  samplesUsed: number;
+  effectiveSampleSize?: number;
+  evidenceStats?: EvidenceStats;
+  explanations?: Record<string, VariableExplanation>;
+}
