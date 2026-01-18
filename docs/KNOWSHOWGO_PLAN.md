@@ -10,6 +10,29 @@ its own branch or repository as needed.
 - Optional async replication of activation updates to persistent storage.
 - Deterministic parsing utilities for offline or low-cost intent detection.
 
+## Use cases
+- Memory-augmented agents that reinforce frequently used concepts or steps.
+- Argumentation graphs for conflicting claims with support/inhibit edges.
+- Discourse and dialogue tracking (claims, counterclaims, evidence trails).
+- Flowchart-like procedural memory with probabilistic activation.
+- Knowledge graphs with soft constraints and traceable updates.
+
+## Beyond a schema
+KnowShowGo is not just a schema. It provides:
+- A working-memory activation layer (session-scoped reinforcement).
+- An async persistence pattern for background updates.
+- Deterministic parsing for capture paths without LLMs.
+- A mapping strategy to store inference runs and provenance.
+
+These allow modeling code, arguments, discourse, and flowcharts as activations
+and relations rather than hard-coded procedural logic.
+
+## Discoverability and packaging
+KnowShowGo is a Python-first package and service plan:
+- Target distribution: PyPI (`knowshowgo`) and a lightweight service API.
+- JS users should consume NeuroJSON via `neurosym` on npm, or a thin KSG client
+  can be published later if needed.
+
 ## Priorities (ordered)
 1) WorkingMemoryGraph as a reinforcement layer.
 2) AsyncReplicator for background persistence.
