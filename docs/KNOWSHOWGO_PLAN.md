@@ -68,6 +68,9 @@ KnowShowGo is a Python-first package and service plan:
 - Use `MUTEX` when a winner-take-all branch is required.
 - See `docs/KNOWSHOWGO_PROCEDURES.md` for the convention.
 
+### F) Refactor handoff summary
+- Consolidated refactor plan and priorities in `docs/KNOWSHOWGO_HANDOFF.md`.
+
 ## Integration constraints
 - Keep the activation graph session-scoped by default.
 - Persistence is optional and should not block the agent loop.
