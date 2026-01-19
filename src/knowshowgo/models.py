@@ -108,6 +108,7 @@ class LogicType:
     SUPPORTS = "SUPPORTS"  # A reinforces B
     DEPENDS = "DEPENDS"    # A depends on B
     MUTEX = "MUTEX"        # Mutual exclusion
+    FOLLOWS = "FOLLOWS"    # Sequence edge: source precedes target
 
 
 class LogicOp:
@@ -227,6 +228,24 @@ class Association:
             target_id=target_id,
             relation=relation,
             logic_type=LogicType.ATTACKS,
+            logic_weight=weight,
+            created_by=created_by,
+        )
+
+    @staticmethod
+    def create_follows(
+        source_id: str,
+        target_id: str,
+        relation: str = "follows",
+        weight: float = 1.0,
+        created_by: Optional[str] = None,
+    ) -> "Association":
+        """Creates a sequence edge: source precedes target."""
+        return Association.create(
+            source_id=source_id,
+            target_id=target_id,
+            relation=relation,
+            logic_type=LogicType.FOLLOWS,
             logic_weight=weight,
             created_by=created_by,
         )
