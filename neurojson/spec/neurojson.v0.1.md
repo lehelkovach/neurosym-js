@@ -61,6 +61,12 @@ Recommended aggregation:
 This provides a simple and stable way to combine multiple supports and
 inhibitions.
 
+## Boolean vs fuzzy interpretation
+NeuroJSON v0.1 uses boolean variables. When inputs are treated as crisp
+booleans (0/1) and weights are 0/1, the system collapses to boolean-algebra
+style reasoning. When weights are fractional, it becomes fuzzy/probabilistic
+reasoning with graded support and inhibition.
+
 ## Evidence semantics
 Evidence clamps a variable to 0 or 1. Inference should use likelihood-weighted
 sampling rather than rejection, so evidence updates the sample weight instead
@@ -74,3 +80,10 @@ If omitted, all variable posteriors should be returned.
 - Programs must declare a `version`.
 - Validation is strict and versioned.
 - Breaking changes require a new version and schema.
+
+## Future extensions (v0.2+)
+These are intentionally out of scope for v0.1 but planned:
+- Soft evidence: allow fuzzy observations (0..1) in addition to hard 0/1.
+- Soft constraints for negation: graded inhibition that can coalesce into evidence.
+- Hard falsification constraints: rules that invalidate samples when violated.
+- Contextual gating: variable- or context-based gain modulation on factor weights.
