@@ -62,6 +62,12 @@ KnowShowGo is a Python-first package and service plan:
 - Write back posteriors to `Assertion.truth` when appropriate.
 - Capture `warnings` and `evidenceStats` in run metadata for traceability.
 
+### E) Procedure modeling convention
+- Document procedure/decision modeling using `FOLLOWS` + gate nodes.
+- Use weighted `SUPPORTS` from conditions to gates.
+- Use `MUTEX` when a winner-take-all branch is required.
+- See `docs/KNOWSHOWGO_PROCEDURES.md` for the convention.
+
 ## Integration constraints
 - Keep the activation graph session-scoped by default.
 - Persistence is optional and should not block the agent loop.
