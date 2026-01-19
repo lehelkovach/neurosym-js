@@ -1,6 +1,7 @@
 """Tests for NeuroService - KSG + NeuroSym integration."""
 
 import pytest
+from knowshowgo.belief_resolver import BeliefResolver
 from knowshowgo.models import Node, Association, LogicType, LogicMeta
 from knowshowgo.neuro_service import NeuroService, run_local_inference
 from knowshowgo.neuro import NeuroEngine, fuzzy_and, fuzzy_or, fuzzy_not, implies
@@ -230,6 +231,57 @@ class TestNeuroService:
         assert len(schema["variables"]) == 3
         assert len(schema["rules"]) == 1  # One IMPLIES
         assert len(schema["constraints"]) == 1  # One ATTACK
+
+    def test_belief_resolver_overrides_prior(self):
+        class FixedResolver(BeliefResolver):
+            def get_prior(self, node: Node) -> float:
+                return 0.2
+
+            def get_evidence(self, node: Node):
+                return None
+
+            def is_locked(self, node: Node) -> bool:
+                return False
+
+        penguin, bird, fly = self.create_test_nodes()
+        service = NeuroService(belief_resolver=FixedResolver())
+        context = service.extract_context(
+            nodes=[penguin, bird, fly],
+            associations=[],
+            center_node_id=penguin.id,
+        )
+
+        schema = service.to_neuro_json(context)
+        for var in schema["variables"].values():
+            assert var["prior"] == 0.2
+
+    def test_belief_resolver_injects_evidence(self):
+        class EvidenceResolver(BeliefResolver):
+            def get_prior(self, node: Node) -> float:
+                return 0.5
+
+            def get_evidence(self, node: Node):
+                return 1.0 if node.payload.get("name") == "Penguin" else None
+
+            def is_locked(self, node: Node) -> bool:
+                return False
+
+        penguin, bird, fly = self.create_test_nodes()
+        penguin_is_bird = Association.create_implies(
+            source_id=penguin.id,
+            target_id=bird.id,
+            weight=1.0,
+        )
+
+        service = NeuroService(belief_resolver=EvidenceResolver())
+        context = service.extract_context(
+            nodes=[penguin, bird, fly],
+            associations=[penguin_is_bird],
+            center_node_id=penguin.id,
+        )
+
+        results = service.run_inference(context)
+        assert results[bird.id] > 0.5
 
     def test_run_inference(self):
         """Tests running inference on KSG nodes."""

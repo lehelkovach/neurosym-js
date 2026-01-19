@@ -20,6 +20,7 @@ from typing import Dict, List, Optional, Set, Any
 from dataclasses import dataclass
 
 from .models import Node, Association, LogicType, LogicMeta
+from .belief_resolver import BeliefResolver, DefaultBeliefResolver
 from .neuro import NeuroEngine
 from .neuro.types import NeuroJSON, Variable, Rule, Constraint, TruthValue
 
@@ -43,7 +44,7 @@ class NeuroService:
     - Grounding of first-order rules to instances
     """
 
-    def __init__(self, db=None):
+    def __init__(self, db=None, belief_resolver: Optional[BeliefResolver] = None):
         """
         Initialize NeuroService.
         
@@ -54,6 +55,7 @@ class NeuroService:
                 - bulk_update_nodes(updates)
         """
         self.db = db
+        self.belief_resolver = belief_resolver or DefaultBeliefResolver()
         self.config = {
             "max_iterations": 50,
             "convergence_threshold": 0.001,
@@ -126,8 +128,8 @@ class NeuroService:
             var_name = self._node_to_var_name(node)
             variables[var_name] = {
                 "type": "bool",
-                "prior": node.prior,
-                "locked": node.is_locked,
+                "prior": self.belief_resolver.get_prior(node),
+                "locked": self.belief_resolver.is_locked(node),
             }
         
         # Convert associations to rules/constraints
@@ -245,6 +247,13 @@ class NeuroService:
         
         # Convert evidence node IDs to variable names
         var_evidence = {}
+        # Optional evidence from resolver (decoupled from node schema)
+        for node_id, node in context.nodes.items():
+            evidence_value = self.belief_resolver.get_evidence(node)
+            if evidence_value is not None:
+                var_name = self._node_to_var_name(node)
+                if var_name in schema["variables"]:
+                    var_evidence[var_name] = evidence_value
         if evidence:
             for node_id, value in evidence.items():
                 var_name = f"node_{node_id}"

@@ -3,6 +3,7 @@ from .inference import process_instruction
 from .working_memory import WorkingMemoryGraph
 from .replication import AsyncReplicator, EdgeUpdate
 from .api import KnowShowGoAPI
+from .belief_resolver import BeliefResolver, DefaultBeliefResolver
 from .neuro_artifacts import InMemoryNeuroStore, NeuroProgramArtifact, NeuroInferenceRun
 from .models import (
     Prototype,
@@ -28,6 +29,8 @@ __all__ = [
     "AsyncReplicator",
     "EdgeUpdate",
     "KnowShowGoAPI",
+    "BeliefResolver",
+    "DefaultBeliefResolver",
     "NeuroProgramArtifact",
     "NeuroInferenceRun",
     "InMemoryNeuroStore",
