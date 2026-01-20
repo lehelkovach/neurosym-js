@@ -68,7 +68,11 @@ KnowShowGo is a Python-first package and service plan:
 - Use `MUTEX` when a winner-take-all branch is required.
 - See `docs/KNOWSHOWGO_PROCEDURES.md` for the convention.
 
-### F) Refactor handoff summary
+### F) VSA (vector symbolic) memory layer
+- Add a statistical fuzzy VSA layer for compositional memory (bundling/binding).
+- Use VSA vectors as an alternate recall signal in semantic search.
+
+### G) Refactor handoff summary
 - Consolidated refactor plan and priorities in `docs/KNOWSHOWGO_HANDOFF.md`.
 
 ## Integration constraints

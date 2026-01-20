@@ -59,7 +59,13 @@ This emulates hyperedges without changing storage primitives.
   - `get_is_locked(node)`
 - Default to current fields, but allow alternative policies.
 
-### D) Artifact + provenance integration
+### D) Statistical fuzzy VSA layer (optional but aligned)
+- Add a **Vector Symbolic Architecture (VSA)** layer for compositional memory.
+- Support **bundling** (superposition) and **binding** (role–filler).
+- Use VSA vectors as an alternative retrieval signal alongside embeddings.
+- Map VSA traces to prototypes or subgraphs for fast recall.
+
+### E) Artifact + provenance integration
 - Store NeuroJSON programs as immutable artifacts.
 - Store inference runs with evidence, warnings, and metadata.
 
