@@ -3,6 +3,7 @@
  */
 
 import { NeuroEngine, createEngine, TrainingData, NeuroJSON } from '../src';
+import type { Rule } from '../src/types';
 
 describe('NeuroEngine', () => {
   // Bird classification example from the design doc
@@ -186,6 +187,106 @@ describe('NeuroEngine', () => {
     });
   });
 
+  describe('Rule types (additional)', () => {
+    it('should apply conjunction rules', () => {
+      const schema: NeuroJSON = {
+        version: '1.0',
+        variables: {
+          a: { type: 'bool', prior: 0.2 },
+          b: { type: 'bool', prior: 0.2 },
+          c: { type: 'bool', prior: 0.05 }
+        },
+        rules: [{
+          id: 'and_rule',
+          type: 'CONJUNCTION',
+          inputs: ['a', 'b'],
+          output: 'c',
+          op: 'AND',
+          weight: 0.9
+        }],
+        constraints: []
+      };
+
+      const ai = new NeuroEngine(schema);
+      const result = ai.run({ a: 1.0, b: 1.0 });
+      expect(result.c).toBeGreaterThan(0.5);
+    });
+
+    it('should apply disjunction rules', () => {
+      const schema: NeuroJSON = {
+        version: '1.0',
+        variables: {
+          a: { type: 'bool', prior: 0.2 },
+          b: { type: 'bool', prior: 0.2 },
+          c: { type: 'bool', prior: 0.05 }
+        },
+        rules: [{
+          id: 'or_rule',
+          type: 'DISJUNCTION',
+          inputs: ['a', 'b'],
+          output: 'c',
+          op: 'OR',
+          weight: 0.8
+        }],
+        constraints: []
+      };
+
+      const ai = new NeuroEngine(schema);
+      const result = ai.run({ a: 0.0, b: 1.0 });
+      expect(result.c).toBeGreaterThan(0.4);
+    });
+
+    it('should apply equivalence rules with two inputs', () => {
+      const schema: NeuroJSON = {
+        version: '1.0',
+        variables: {
+          a: { type: 'bool', prior: 0.2 },
+          b: { type: 'bool', prior: 0.2 },
+          eq: { type: 'bool', prior: 0.1 }
+        },
+        rules: [{
+          id: 'eq_rule',
+          type: 'EQUIVALENCE',
+          inputs: ['a', 'b'],
+          output: 'eq',
+          op: 'IDENTITY',
+          weight: 0.9
+        }],
+        constraints: []
+      };
+
+      const ai = new NeuroEngine(schema);
+      const result = ai.run({ a: 1.0, b: 1.0 });
+      expect(result.eq).toBeGreaterThan(0.6);
+    });
+
+    it('should ignore unknown rule types', () => {
+      const schema: NeuroJSON = {
+        version: '1.0',
+        variables: {
+          a: { type: 'bool', prior: 0.6 },
+          b: { type: 'bool', prior: 0.2 }
+        },
+        rules: [],
+        constraints: []
+      };
+
+      const ai = new NeuroEngine(schema);
+      const graph = ai.getGraph();
+      graph.addRule({
+        id: 'bad_rule',
+        type: 'UNKNOWN',
+        inputs: ['a'],
+        output: 'b',
+        op: 'IDENTITY',
+        weight: 0.9
+      } as unknown as Rule);
+
+      const result = ai.run({ a: 1.0 });
+      expect(result.b).toBeCloseTo(0.2);
+    });
+  });
+
   describe('query() - Single Variable', () => {
     it('should query a single variable', () => {
       const ai = new NeuroEngine(causalSchema);
@@ -325,6 +426,12 @@ describe('NeuroEngine', () => {
       const state = ai.getState();
       expect(state.has_wings).toBe(1.0);
     });
+
+    it('should expose the underlying graph', () => {
+      const ai = new NeuroEngine(birdSchema);
+      const graph = ai.getGraph();
+      expect(graph.getVariableNames()).toContain('has_wings');
+    });
   });
 
   describe('Configuration', () => {
@@ -386,6 +493,42 @@ describe('NeuroEngine', () => {
       
       // Conclusion should be significantly reduced
       expect(result.conclusion).toBeLessThan(0.5);
+    });
+  });
+
+  describe('Argumentation (Support)', () => {
+    it('should apply support constraints to multiple targets', () => {
+      const schema: NeuroJSON = {
+        version: '1.0',
+        variables: {
+          evidence: { type: 'bool', prior: 0.8 },
+          target_a: { type: 'bool', prior: 0.1 },
+          target_b: { type: 'bool', prior: 0.4 }
+        },
+        rules: [],
+        constraints: [
+          {
+            id: 'support_missing_source',
+            type: 'SUPPORT',
+            source: 'ghost',
+            target: 'target_a',
+            weight: 0.4
+          },
+          {
+            id: 'support_multi',
+            type: 'SUPPORT',
+            source: 'evidence',
+            target: ['target_a', 'target_b', 'ghost_target'],
+            weight: 0.7
+          }
+        ]
+      };
+
+      const ai = new NeuroEngine(schema);
+      const result = ai.run({ evidence: 1.0, target_b: 1.0 });
+
+      expect(result.target_b).toBe(1.0);
+      expect(result.target_a).toBeGreaterThan(0.1);
     });
   });
 
