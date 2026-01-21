@@ -1,6 +1,6 @@
 {
   "name": "neurosym",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lightweight, zero-dependency JavaScript library for Neurosymbolic AI implementing Logical Neural Networks (LNN) with a NeuroJSON protocol",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
