@@ -119,7 +119,7 @@ class GraphDerivedBeliefResolver(DefaultBeliefResolver):
 class PredicateBeliefResolver(DefaultBeliefResolver):
     """Derives evidence from a neural predicate registry."""
 
-    registry: NeuralPredicateRegistry
+    registry: NeuralPredicateRegistry = field(default_factory=NeuralPredicateRegistry)
     predicate_key: str = "predicate"
     predicate_inputs_key: str = "predicate_inputs"
 
