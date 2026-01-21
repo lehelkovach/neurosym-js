@@ -18,6 +18,7 @@ discussed so far into one handoff plan.
 ### Reasoning + artifacts
 - NeuroService converts KSG subgraphs to NeuroJSON for inference.
 - Neuro artifacts store can persist programs + inference runs with provenance.
+- Graph-derived belief resolver supports lazy priors/evidence (see `docs/KNOWSHOWGO_MODEL.md`).
 
 ## Core conventions (parsimonious modeling)
 ### 1) Procedure + decision modeling
@@ -88,3 +89,4 @@ This emulates hyperedges without changing storage primitives.
 - Keep the model parsimonious: nodes + weighted edges only.
 - Treat NeuroJSON as the **reasoning view**, not the memory itself.
 - Evidence and context drive recall; priors capture baseline belief.
+- For the full belief model and lazy evaluation rationale, see `docs/KNOWSHOWGO_MODEL.md`.

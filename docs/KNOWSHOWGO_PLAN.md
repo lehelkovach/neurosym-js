@@ -75,6 +75,11 @@ KnowShowGo is a Python-first package and service plan:
 ### G) Refactor handoff summary
 - Consolidated refactor plan and priorities in `docs/KNOWSHOWGO_HANDOFF.md`.
 
+### H) Lazy belief evaluation + caching
+- Add a graph-derived resolver that computes priors/evidence at query time.
+- Cache derived priors per context; recompute on context change.
+- Document the belief model and reasoning view in `docs/KNOWSHOWGO_MODEL.md`.
+
 ## Integration constraints
 - Keep the activation graph session-scoped by default.
 - Persistence is optional and should not block the agent loop.
