@@ -98,9 +98,17 @@ flexible recall.
 
 ## 7) Not yet implemented (future work)
 
-The following are planned but not yet available in KSG:
-- **VSA (vector symbolic) memory** for bundling/binding.
-- **Neural predicates / DeepProbLog-like features**.
-- **Recursion / full logic programming semantics**.
+## 7) First-release additions
+
+- **VSA module**: bundling/binding, cosine similarity, and a small in-memory index.
+- **Neural predicate registry**: plug in predicate scorers to generate evidence.
+- **Predicate-based belief resolver**: turns predicate outputs into evidence.
+  - Payload keys: `predicate`, `predicate_inputs`.
+
+## 8) Not yet implemented (future work)
+
+- **Advanced VSA** (persistent vector stores, role/filler binding, decoding).
+- **DeepProbLog-level features** (neural predicates with backprop, recursion).
+- **Full logic programming semantics** (recursion, unification, grounding).
 
 See `docs/KNOWSHOWGO_PLAN.md` for the current roadmap.

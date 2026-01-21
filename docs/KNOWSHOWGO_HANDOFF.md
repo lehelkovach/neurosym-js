@@ -19,6 +19,7 @@ discussed so far into one handoff plan.
 - NeuroService converts KSG subgraphs to NeuroJSON for inference.
 - Neuro artifacts store can persist programs + inference runs with provenance.
 - Graph-derived belief resolver supports lazy priors/evidence (see `docs/KNOWSHOWGO_MODEL.md`).
+- Predicate-based resolver provides neural predicate evidence hooks.
 
 ## Core conventions (parsimonious modeling)
 ### 1) Procedure + decision modeling
@@ -63,6 +64,7 @@ This emulates hyperedges without changing storage primitives.
   and caches results per context.
 
 ### D) Statistical fuzzy VSA layer (optional but aligned)
+- v0.1 includes a minimal VSA module (bundling/binding + cosine similarity).
 - Add a **Vector Symbolic Architecture (VSA)** layer for compositional memory.
 - Support **bundling** (superposition) and **binding** (role–filler).
 - Use VSA vectors as an alternative retrieval signal alongside embeddings.
