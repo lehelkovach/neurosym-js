@@ -82,3 +82,4 @@ npm run build
 ## Documentation
 - Unified plan and positioning: `docs/DEVELOPMENT_PLAN.md`
 - KnowShowGo plan (separate track): `docs/KNOWSHOWGO_PLAN.md`
+- Project overview (what/how/why): `docs/OVERVIEW.md`
