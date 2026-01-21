@@ -67,3 +67,4 @@ npm run typecheck
 ## Design docs
 - Unified plan (includes design/positioning): `docs/DEVELOPMENT_PLAN.md`
 - KnowShowGo plan (separate track): `docs/KNOWSHOWGO_PLAN.md`
+- KnowShowGo model and belief semantics: `docs/KNOWSHOWGO_MODEL.md`
