@@ -95,3 +95,12 @@ flexible recall.
 - **Pluggable policies**: swap resolvers without changing the graph.
 - **Compatibility**: supports fuzzy belief, hard evidence, and WTA constraints.
 - **Scalable recall**: cache computed priors for repeated queries.
+
+## 7) Not yet implemented (future work)
+
+The following are planned but not yet available in KSG:
+- **VSA (vector symbolic) memory** for bundling/binding.
+- **Neural predicates / DeepProbLog-like features**.
+- **Recursion / full logic programming semantics**.
+
+See `docs/KNOWSHOWGO_PLAN.md` for the current roadmap.

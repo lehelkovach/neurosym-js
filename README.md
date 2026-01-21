@@ -63,6 +63,7 @@ npm run typecheck
 - Core package README: `neurosym-js/README.md`
 - Standalone docs: `neurosym.js-standalone/docs/`
 - NeuroJSON spec: `neurojson/spec/neurojson.v0.1.md`
+- Project overview (what/how/why): `docs/OVERVIEW.md`
 
 ## Design docs
 - Unified plan (includes design/positioning): `docs/DEVELOPMENT_PLAN.md`
