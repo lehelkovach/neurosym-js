@@ -27,6 +27,14 @@ except KnowShowGo-specific plans, which are intentionally separated.
 - Standalone package and deeper docs exist in `neurosym.js-standalone/`.
 - Python neuro engine and KnowShowGo integration live in `src/knowshowgo/`.
 - Integration guides and salvage analyses exist in `docs/`.
+- NeuroJSON v0.1 spec + schema + fixtures live in `neurojson/`.
+
+## Updated priorities (2026-01-17)
+1) **Lock v0.1 semantics and parity** across JS/Python using shared fixtures.
+2) **Release readiness** for the `neurosym` npm package (docs, versioning, CI).
+3) **Inference hardening**: convergence guidance, warnings, and test coverage.
+4) **v0.2 planning**: identify minimal extensions (categorical vars, richer ops).
+5) **Integration docs** stay separate for KnowShowGo; keep core scope focused.
 
 ## Guiding principles
 - Code as data: logic is defined in NeuroJSON, not hardcoded functions.
@@ -108,6 +116,8 @@ Deliverables:
 - Add minimal parity test vectors shared across JS and Python.
 Exit criteria:
 - Same inputs yield same outputs within tolerances in both runtimes.
+Status (2026-01-17):
+- Core fixtures exist; ensure cross-runtime parity runners stay in sync.
 
 ### Phase 1: Docs and packaging (short term)
 Goal: make the project usable without reading source code.
@@ -117,6 +127,8 @@ Deliverables:
 - Ensure examples compile and run against the current API.
 Exit criteria:
 - Quick start works end-to-end from docs without edits.
+Status (2026-01-17):
+- Docs largely in place; focus next on release/packaging polish.
 
 ### Phase 2: Core library hardening
 Goal: reliability and maintainability of the JS core.
@@ -127,6 +139,8 @@ Deliverables:
 - Surface semantic warnings (unknown evidence/queries, cycles).
 Exit criteria:
 - Test suite covers core logic paths and passes reliably.
+Status (2026-01-17):
+- Warnings exist; expand constraint coverage and convergence guidance.
 
 ### Phase 3: NeuroJSON evolution
 Goal: formalize and extend schema safely.
@@ -165,6 +179,8 @@ Exit criteria:
 ## Downstream integration guidance
 Keep KnowShowGo integration plans in the separate plan document. This plan
 should not block core library development.
+See `docs/KNOWSHOWGO_MODEL.md` for the reasoning-view/belief model, which
+is intentionally outside the core NeuroSym.js scope.
 
 ## Testing strategy
 - JS: `npm test`, `npm run typecheck`, `npm run lint`.
@@ -180,3 +196,6 @@ should not block core library development.
 ## Decision log
 When a major decision changes the plan (schema changes, engine semantics, API
 breaks), add a short entry here with date and rationale.
+
+- 2026-01-17: Updated priorities to emphasize v0.1 parity, release readiness,
+  and inference hardening; KSG belief model documented separately.
