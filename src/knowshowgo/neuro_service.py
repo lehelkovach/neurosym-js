@@ -220,6 +220,7 @@ class NeuroService:
         context: ContextGraph,
         evidence: Optional[Dict[str, TruthValue]] = None,
         iterations: Optional[int] = None,
+        active_context_ids: Optional[List[str]] = None,
     ) -> Dict[str, TruthValue]:
         """
         Runs inference on a context graph.
@@ -232,6 +233,13 @@ class NeuroService:
         Returns:
             Dict of node_id -> updated truth_value
         """
+        # Prepare resolver context (optional, supports lazy priors/evidence)
+        if hasattr(self.belief_resolver, "prepare_context"):
+            context_ids = active_context_ids
+            if context_ids is None and evidence:
+                context_ids = list(evidence.keys())
+            self.belief_resolver.prepare_context(context, active_context_ids=context_ids)
+
         # Convert to NeuroJSON
         schema = self.to_neuro_json(context)
         
@@ -277,6 +285,7 @@ class NeuroService:
         depth: int = 2,
         evidence: Optional[Dict[str, TruthValue]] = None,
         write_back: bool = True,
+        active_context_ids: Optional[List[str]] = None,
     ) -> Dict[str, TruthValue]:
         """
         The main "Solve" routine from the integration design.
@@ -299,7 +308,11 @@ class NeuroService:
         context = await self.fetch_context(center_node_id, depth)
         
         # 2-3. Convert to NeuroJSON and run inference
-        results = self.run_inference(context, evidence)
+        results = self.run_inference(
+            context,
+            evidence,
+            active_context_ids=active_context_ids,
+        )
         
         # 4. Write Back to DB
         if write_back and self.db is not None:

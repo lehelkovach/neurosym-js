@@ -58,6 +58,8 @@ This emulates hyperedges without changing storage primitives.
   - `get_evidence(node)`
   - `get_is_locked(node)`
 - Default to current fields, but allow alternative policies.
+- Add a **graph-derived resolver** that lazily computes priors/evidence at query time
+  and caches results per context.
 
 ### D) Statistical fuzzy VSA layer (optional but aligned)
 - Add a **Vector Symbolic Architecture (VSA)** layer for compositional memory.
