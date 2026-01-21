@@ -1,8 +1,8 @@
 """Tests for NeuroService - KSG + NeuroSym integration."""
 
 import pytest
-from knowshowgo.belief_resolver import BeliefResolver
-from knowshowgo.models import Node, Association, LogicType, LogicMeta
+from knowshowgo.belief_resolver import BeliefResolver, GraphDerivedBeliefResolver
+from knowshowgo.models import Node, Association, LogicType, LogicMeta, CONTEXT_PROTOTYPE
 from knowshowgo.neuro_service import NeuroService, run_local_inference
 from knowshowgo.neuro import NeuroEngine, fuzzy_and, fuzzy_or, fuzzy_not, implies
 
@@ -282,6 +282,37 @@ class TestNeuroService:
 
         results = service.run_inference(context)
         assert results[bird.id] > 0.5
+
+    def test_graph_derived_resolver_context_boost(self):
+        context_node = Node.create(
+            prototype_id=CONTEXT_PROTOTYPE,
+            payload={"name": "ExplainingSort"},
+            prior=0.1,
+        )
+        step_node = Node.create(
+            prototype_id="step",
+            payload={"name": "IterateList"},
+            prior=0.1,
+            context_ids=[context_node.id],
+        )
+
+        resolver = GraphDerivedBeliefResolver(
+            default_prior=0.1,
+            use_node_prior=False,
+            context_boost=0.4,
+            treat_context_as_evidence=False,
+        )
+        service = NeuroService(belief_resolver=resolver)
+        context = service.extract_context(
+            nodes=[context_node, step_node],
+            associations=[],
+            center_node_id=step_node.id,
+        )
+
+        resolver.prepare_context(context, active_context_ids=[context_node.id])
+        schema = service.to_neuro_json(context)
+        step_var = schema["variables"][f"node_{step_node.id}"]
+        assert step_var["prior"] == 0.5
 
     def test_run_inference(self):
         """Tests running inference on KSG nodes."""
