@@ -3,7 +3,23 @@ from .inference import process_instruction
 from .working_memory import WorkingMemoryGraph
 from .replication import AsyncReplicator, EdgeUpdate
 from .api import KnowShowGoAPI
-from .belief_resolver import BeliefResolver, DefaultBeliefResolver, GraphDerivedBeliefResolver
+from .belief_resolver import (
+    BeliefResolver,
+    DefaultBeliefResolver,
+    GraphDerivedBeliefResolver,
+    PredicateBeliefResolver,
+)
+from .neural_predicates import NeuralPredicateRegistry
+from .vsa import (
+    VsaEncoder,
+    VsaMemoryIndex,
+    bundle,
+    bind,
+    unbind,
+    cosine_similarity,
+    attach_vsa,
+    get_node_vsa,
+)
 from .neuro_artifacts import InMemoryNeuroStore, NeuroProgramArtifact, NeuroInferenceRun
 from .models import (
     Prototype,
@@ -32,6 +48,16 @@ __all__ = [
     "BeliefResolver",
     "DefaultBeliefResolver",
     "GraphDerivedBeliefResolver",
+    "PredicateBeliefResolver",
+    "NeuralPredicateRegistry",
+    "VsaEncoder",
+    "VsaMemoryIndex",
+    "bundle",
+    "bind",
+    "unbind",
+    "cosine_similarity",
+    "attach_vsa",
+    "get_node_vsa",
     "NeuroProgramArtifact",
     "NeuroInferenceRun",
     "InMemoryNeuroStore",

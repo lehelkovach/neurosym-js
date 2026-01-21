@@ -69,8 +69,9 @@ KnowShowGo is a Python-first package and service plan:
 - See `docs/KNOWSHOWGO_PROCEDURES.md` for the convention.
 
 ### F) VSA (vector symbolic) memory layer
-- Add a statistical fuzzy VSA layer for compositional memory (bundling/binding).
+- v0.1: minimal VSA module (bundling/binding + cosine similarity + in-memory index).
 - Use VSA vectors as an alternate recall signal in semantic search.
+- v0.2+: persistence, role/filler binding, and decoding utilities.
 
 ### G) Refactor handoff summary
 - Consolidated refactor plan and priorities in `docs/KNOWSHOWGO_HANDOFF.md`.
@@ -79,6 +80,11 @@ KnowShowGo is a Python-first package and service plan:
 - Add a graph-derived resolver that computes priors/evidence at query time.
 - Cache derived priors per context; recompute on context change.
 - Document the belief model and reasoning view in `docs/KNOWSHOWGO_MODEL.md`.
+
+### I) Neural predicate hooks
+- Provide a predicate registry for model-driven evidence.
+- Add a belief resolver that reads predicate outputs from node payload.
+- Payload keys: `predicate`, `predicate_inputs`.
 
 ## Integration constraints
 - Keep the activation graph session-scoped by default.

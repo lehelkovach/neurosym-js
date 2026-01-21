@@ -84,24 +84,28 @@ Key docs:
 - Legacy v1.0 engine with rules/constraints (support/attack/mutex).
 - KSG belief resolver abstraction + graph-derived resolver.
 - Procedure modeling primitives (FOLLOWS + gates + MUTEX).
+- Minimal VSA module (bundling/binding + memory index) for KSG.
+- Neural predicate registry + predicate-based evidence resolver.
 
 ### Planned or not yet implemented
-- **VSA layer** (vector symbolic memory): planned, not implemented.
-- **Neural predicates / DeepProbLog features**: not implemented.
+- **Advanced VSA layer** (binding roles, persistence, compositional memory).
+- **Neural predicates / DeepProbLog features** beyond basic predicate hooks.
 - **Recursion / probabilistic logic programming**: not implemented.
 - **Arbitrary factor potentials / rich factor graphs**: not implemented.
 - **Loopy inference / exact inference**: not implemented.
 
 ## 8) Does it have all VSA / factor-graph / DeepProbLog needs for KSG?
 
-Not yet. KSG has:
+Not fully. KSG has:
 - A usable belief model and graph-to-NeuroJSON mapping.
 - Weighted support/inhibit and MUTEX constraints.
 - Lazy, context-aware priors/evidence via resolver policies.
+- **Minimal VSA module** (bundling/binding + memory index).
+- **Neural predicate registry** for evidence hooks.
 
 But it does **not** yet include:
-- VSA (bundling/binding) memory.
-- Neural predicates or differentiable logic programming.
+- Advanced VSA (role/filler binding, persistence, decoding).
+- DeepProbLog-level neural predicates (training + backprop).
 - Recursion or full Prolog/ProbLog semantics.
 
 Those are explicitly tracked as future work in `docs/KNOWSHOWGO_PLAN.md`.

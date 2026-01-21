@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from typing import Dict, Iterable, Optional, Protocol
 
 from .models import Association, LogicType, Node, CONTEXT_PROTOTYPE
+from .neural_predicates import NeuralPredicateRegistry
 
 
 class ContextGraphLike(Protocol):
@@ -112,3 +113,29 @@ class GraphDerivedBeliefResolver(DefaultBeliefResolver):
         if node.id in self._evidence_by_node:
             return True
         return super().is_locked(node)
+
+
+@dataclass
+class PredicateBeliefResolver(DefaultBeliefResolver):
+    """Derives evidence from a neural predicate registry."""
+
+    registry: NeuralPredicateRegistry = field(default_factory=NeuralPredicateRegistry)
+    predicate_key: str = "predicate"
+    predicate_inputs_key: str = "predicate_inputs"
+
+    def get_evidence(self, node: Node) -> Optional[float]:
+        evidence = super().get_evidence(node)
+        if evidence is not None:
+            return evidence
+        predicate_name = node.payload.get(self.predicate_key)
+        if not predicate_name:
+            return None
+        raw_inputs = node.payload.get(self.predicate_inputs_key, {})
+        if not isinstance(raw_inputs, dict):
+            return None
+        inputs = {
+            key: float(value)
+            for key, value in raw_inputs.items()
+            if isinstance(value, (int, float))
+        }
+        return self.registry.evaluate(str(predicate_name), inputs)
