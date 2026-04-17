@@ -86,6 +86,7 @@ Key docs:
 - Procedure modeling primitives (FOLLOWS + gates + MUTEX).
 - Minimal VSA module (bundling/binding + memory index) for KSG.
 - Neural predicate registry + predicate-based evidence resolver.
+- LNN/PLN overview and examples in `docs/LNN_PLN.md`.
 
 ### Planned or not yet implemented
 - **Advanced VSA layer** (binding roles, persistence, compositional memory).
